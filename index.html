@@ -1,162 +1,188 @@
 <!DOCTYPE html>
-<html lang="ja" class="scroll-smooth">
+<html lang="ja" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kanata Arakaki | Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-          colors: {
-            brand: { 400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2', 900: '#164e63' },
-            dark: { 800: '#0f172a', 900: '#020617' }
+          fontFamily: { 
+            sans: ['Inter', 'sans-serif'], 
+            mono: ['JetBrains Mono', 'monospace'] 
           },
-          animation: {
-            'blob': 'blob 7s infinite',
-            'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+          colors: { 
+            brand: { 400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2' } 
           },
-          keyframes: {
-            blob: {
-              '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-              '100%': { transform: 'translate(0px, 0px) scale(1)' },
-            },
-            fadeInUp: {
-              '0%': { opacity: 0, transform: 'translateY(20px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
-            }
-          }
         }
       }
     }
   </script>
 
   <style>
-    body { background-color: #020617; color: #f8fafc; overflow-x: hidden; }
-    /* ガラスのような透過UI */
-    .glass {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+    body { background-color: #050505; color: #ededed; overflow-x: hidden; }
+    
+    /* 背景のサイバーグリッド */
+    .bg-grid { 
+      background-size: 40px 40px; 
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), 
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px); 
     }
-    .glass-hover:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(34, 211, 238, 0.4);
-      box-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
-      transform: translateY(-5px);
+    
+    /* ▼▼▼ ここから最強のスポットライトエフェクト ▼▼▼ */
+    #cards-container { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+    
+    .spotlight-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 1px; /* 枠線を光らせるための隙間 */
+      overflow: hidden;
+      width: 100%;
     }
-    .opacity-0 { opacity: 0; }
-    .delay-100 { animation-delay: 100ms; }
-    .delay-200 { animation-delay: 200ms; }
-    .delay-300 { animation-delay: 300ms; }
+    
+    /* マウスの座標(var(--x), var(--y))に合わせてグラデーションを動かす */
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      top: var(--y, -100%);
+      left: var(--x, -100%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(34,211,238,0.15) 0%, transparent 60%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .spotlight-card:hover::before { opacity: 1; }
+    
+    /* カードのメイン部分（光の上のレイヤー） */
+    .spotlight-card-content {
+      background: #0a0a0a;
+      border-radius: 0.95rem;
+      height: 100%;
+      padding: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    /* ▲▲▲ ここまで ▲▲▲ */
+
+    /* タイプライター風アニメーション */
+    .typing-text {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid #22d3ee;
+      animation: typing 2.5s steps(30, end), blink 0.75s step-end infinite;
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink { 50% { border-color: transparent } }
   </style>
 </head>
-<body class="antialiased selection:bg-brand-500 selection:text-white relative">
+<body class="antialiased bg-grid relative selection:bg-brand-500 selection:text-white">
 
-  <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-blob"></div>
-    <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-blob animation-delay-2000"></div>
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] opacity-30 pointer-events-none" 
+       style="background: radial-gradient(ellipse at top, rgba(34,211,238,0.4), transparent 70%); z-index: -1;">
   </div>
 
-  <nav class="fixed w-full z-50 glass border-b-0 border-white/10">
+  <nav class="fixed w-full z-50 backdrop-blur-md border-b border-white/10 bg-black/50">
     <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" class="text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-500">
-        K.ARAKAKI
-      </a>
-      <div class="space-x-6 text-sm font-medium text-gray-300 hidden md:flex">
-        <a href="#about" class="hover:text-brand-400 transition-colors">About</a>
-        <a href="#projects" class="hover:text-brand-400 transition-colors">Projects</a>
-        <a href="#skills" class="hover:text-brand-400 transition-colors">Skills</a>
+      <div class="font-mono font-bold text-xl tracking-tighter hover:text-brand-400 transition-colors cursor-pointer">
+        KANATA<span class="text-brand-400">.</span>
       </div>
+      <a href="https://github.com/Araka0311" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+        <i class="fab fa-github text-xl"></i>
+      </a>
     </div>
   </nav>
 
-  <section id="about" class="min-h-screen flex items-center justify-center pt-20 px-6">
-    <div class="max-w-4xl w-full text-left">
-      <p class="text-brand-400 font-semibold tracking-wide mb-4 animate-fade-in-up">Hi, my name is</p>
-      <h1 class="text-5xl md:text-7xl font-extrabold mb-6 animate-fade-in-up delay-100">
-        Kanata Arakaki.
+  <main class="pt-32 pb-24 px-6 max-w-5xl mx-auto space-y-32">
+    
+    <section class="space-y-6 pt-12">
+      <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-400 text-xs font-mono mb-4">
+        <span class="w-2 h-2 rounded-full bg-brand-400 mr-2 animate-pulse"></span> Available for Research & Dev
+      </div>
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white leading-tight">
+        Building intelligent <br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-blue-600">interactions.</span>
       </h1>
-      <h2 class="text-4xl md:text-6xl font-bold text-gray-400 mb-8 animate-fade-in-up delay-200">
-        I build intelligent interactions.
-      </h2>
-      <p class="text-lg md:text-xl text-gray-400 max-w-2xl mb-12 leading-relaxed animate-fade-in-up delay-300">
+      <div class="h-8 md:h-10 mt-2">
+        <p class="text-xl md:text-2xl text-gray-400 font-mono typing-text">I'm Kanata Arakaki.</p>
+      </div>
+      <p class="text-gray-400 max-w-2xl text-lg leading-relaxed pt-6">
         愛知工業大学 情報科学部 コンピュータシステム専攻 3年。<br>
         ヒューマン・コンピュータ・インタラクション（HCI）と生成AIを掛け合わせ、ユーザーの認知負荷に寄り添う次世代のシステムを研究・開発しています。
       </p>
-      <div class="animate-fade-in-up delay-300 flex space-x-6">
-        <a href="https://github.com/Araka0311" target="_blank" class="text-3xl text-gray-400 hover:text-white transition-colors"><i class="fab fa-github"></i></a>
-        <a href="#" class="text-3xl text-gray-400 hover:text-brand-400 transition-colors"><i class="fab fa-twitter"></i></a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="projects" class="py-24 px-6 relative">
-    <div class="max-w-5xl mx-auto">
-      <h3 class="text-3xl font-bold mb-12 flex items-center">
-        <span class="text-brand-400 mr-4 font-mono">01.</span> Projects & Research
-        <div class="h-px bg-gray-700 flex-grow ml-6"></div>
-      </h3>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <section id="projects">
+      <h2 class="text-2xl font-bold text-white mb-8 font-mono"><span class="text-brand-400">/</span> projects_and_skills</h2>
+      
+      <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <div class="glass p-8 rounded-2xl transition-all duration-300 glass-hover group">
-          <div class="flex justify-between items-start mb-6">
-            <i class="fas fa-car text-4xl text-brand-400 group-hover:-translate-y-1 transition-transform"></i>
-            <a href="#" class="text-gray-400 hover:text-brand-400"><i class="fas fa-external-link-alt text-xl"></i></a>
+        <div class="spotlight-card group">
+          <div class="spotlight-card-content">
+            <div class="w-12 h-12 rounded-lg bg-brand-500/10 flex items-center justify-center mb-6 border border-brand-500/30 group-hover:bg-brand-500/20 transition-colors">
+              <i class="fas fa-car text-xl text-brand-400"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">運転負荷に合わせた音声対話システム</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              ドライバーの状況（交差点や直線など）に合わせて、AIが自律的に会話を中断・再開するシステム。ドラレコ映像と対話AIを連携させる独自の非同期通信コンポーネントを開発。（YANS 2026 発表予定）
+            </p>
+            <div class="flex flex-wrap gap-2 font-mono text-[11px] text-brand-300">
+              <span class="px-2 py-1 bg-brand-500/10 rounded-md border border-brand-500/20">Python</span>
+              <span class="px-2 py-1 bg-brand-500/10 rounded-md border border-brand-500/20">Streamlit</span>
+              <span class="px-2 py-1 bg-brand-500/10 rounded-md border border-brand-500/20">JavaScript</span>
+            </div>
           </div>
-          <h4 class="text-2xl font-bold text-gray-100 mb-3">運転負荷に合わせた音声対話システム</h4>
-          <p class="text-gray-400 text-sm leading-relaxed mb-6">
-            ドライバーの状況（交差点や直線など）に合わせて、AIが自律的に会話を中断・再開するシステム。ドラレコ映像と対話AIを連携させる独自コンポーネントを開発。（YANS 2026 発表予定）
-          </p>
-          <div class="flex flex-wrap gap-3 font-mono text-xs text-brand-400">
-            <span>Python</span><span>Streamlit</span><span>OpenAI API</span><span>JavaScript</span>
+        </div>
+
+        <div class="spotlight-card group">
+          <div class="spotlight-card-content">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/30 group-hover:bg-blue-500/20 transition-colors">
+              <i class="fas fa-code text-xl text-blue-400"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">Algorithm & Competitive Programming</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              バックエンドの処理速度やリソース最適化の基礎となるアルゴリズム構築能力を鍛えるため、Paizaプラットフォーム等で日々研鑽中。ロジカルな思考力と実装スピードを重視。
+            </p>
+            <div class="flex flex-wrap gap-2 font-mono text-[11px] text-blue-300">
+              <span class="px-2 py-1 bg-blue-500/10 rounded-md border border-blue-500/20">Java</span>
+              <span class="px-2 py-1 bg-blue-500/10 rounded-md border border-blue-500/20">Python</span>
+              <span class="px-2 py-1 bg-blue-500/10 rounded-md border border-blue-500/20">C</span>
+            </div>
           </div>
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="skills" class="py-24 px-6">
-    <div class="max-w-5xl mx-auto">
-      <h3 class="text-3xl font-bold mb-12 flex items-center">
-        <span class="text-brand-400 mr-4 font-mono">02.</span> Skills & Tech Stack
-        <div class="h-px bg-gray-700 flex-grow ml-6"></div>
-      </h3>
+  </main>
 
-      <div class="glass p-10 rounded-2xl text-center">
-        <p class="text-gray-400 italic">※現在スキルセットを整理中...</p>
-        
-        </div>
-    </div>
-  </section>
-
-  <footer class="py-8 text-center text-gray-500 text-sm font-mono mt-12 border-t border-white/10">
-    <p>Designed & Built by Kanata Arakaki</p>
-    <p class="mt-2 text-xs">Powered by Tailwind CSS</p>
+  <footer class="py-12 text-center text-gray-600 text-xs font-mono border-t border-white/5 mt-20">
+    <p>Handcrafted by Kanata Arakaki</p>
   </footer>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-          entry.target.classList.add('animate-fade-in-up');
-        }
-      });
-    });
-    document.querySelectorAll('section > div').forEach((el) => {
-      el.style.opacity = '0';
-      observer.observe(el);
+    const container = document.getElementById("cards-container");
+    container.addEventListener("mousemove", (e) => {
+      for(const card of container.getElementsByClassName("spotlight-card")) {
+        const rect = card.getBoundingClientRect(),
+              x = e.clientX - rect.left,
+              y = e.clientY - rect.top;
+        card.style.setProperty("--x", `${x}px`);
+        card.style.setProperty("--y", `${y}px`);
+      }
     });
   </script>
 </body>
