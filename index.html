@@ -1,66 +1,196 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>新垣 嘉成太 | Portfolio</title>
+  <title>Kanata Arakaki | Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: { 400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2', 900: '#164e63' },
+            dark: { 800: '#0f172a', 900: '#020617' }
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            fadeInUp: {
+              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-  <header class="bg-white shadow-sm py-12">
-    <div class="max-w-4xl mx-auto px-6">
-      <h1 class="text-4xl font-bold text-gray-900">新垣 嘉成太</h1>
-      <p class="mt-2 text-lg text-gray-600">Arakaki Kanata</p>
-      <div class="mt-4 flex space-x-4">
-        <a href="https://github.com/あなたのユーザー名" class="text-blue-600 hover:underline">GitHub</a>
-        <a href="#" class="text-blue-600 hover:underline">X (Twitter)</a>
+  <style>
+    body { background-color: #020617; color: #f8fafc; overflow-x: hidden; }
+    /* ガラスのような透過UI */
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .glass-hover:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(34, 211, 238, 0.4);
+      box-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
+      transform: translateY(-5px);
+    }
+    .opacity-0 { opacity: 0; }
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+  </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white relative">
+
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-blob"></div>
+    <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-blob animation-delay-2000"></div>
+  </div>
+
+  <nav class="fixed w-full z-50 glass border-b-0 border-white/10">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-500">
+        K.ARAKAKI
+      </a>
+      <div class="space-x-6 text-sm font-medium text-gray-300 hidden md:flex">
+        <a href="#about" class="hover:text-brand-400 transition-colors">About</a>
+        <a href="#projects" class="hover:text-brand-400 transition-colors">Projects</a>
+        <a href="#skills" class="hover:text-brand-400 transition-colors">Skills</a>
       </div>
     </div>
-  </header>
+  </nav>
 
-  <main class="max-w-4xl mx-auto px-6 py-12 space-y-12">
-
-    <section>
-      <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">Profile</h2>
-      <p class="text-gray-700 leading-relaxed">
+  <section class="min-h-screen flex items-center justify-center pt-20 px-6">
+    <div class="max-w-4xl w-full text-left">
+      <p class="text-brand-400 font-semibold tracking-wide mb-4 animate-fade-in-up">Hi, my name is</p>
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-6 animate-fade-in-up delay-100">
+        Kanata Arakaki.
+      </h1>
+      <h2 class="text-4xl md:text-6xl font-bold text-gray-400 mb-8 animate-fade-in-up delay-200">
+        I build intelligent interactions.
+      </h2>
+      <p class="text-lg md:text-xl text-gray-400 max-w-2xl mb-12 leading-relaxed animate-fade-in-up delay-300">
         愛知工業大学 情報科学部 コンピュータシステム専攻 3年。<br>
-        ヒューマン・コンピュータ・インタラクション（HCI）や自然言語処理に関心があり、運転中のドライバーの認知負荷に合わせた自律的な音声対話システムの研究・開発を行っています。<br>
-        また、フロントエンド開発（React / Tailwind CSS）や、Paizaでのアルゴリズム問題（Sランク目標）にも日々取り組んでいます。
+        ヒューマン・コンピュータ・インタラクション（HCI）と生成AIを掛け合わせ、ユーザーの認知負荷に寄り添う次世代のシステムを研究・開発しています。
       </p>
-    </section>
+      <div class="animate-fade-in-up delay-300 flex space-x-6">
+        <a href="https://github.com/Araka0311" target="_blank" class="text-3xl text-gray-400 hover:text-white transition-colors"><i class="fab fa-github"></i></a>
+        <a href="#" class="text-3xl text-gray-400 hover:text-brand-400 transition-colors"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </section>
 
-    <section>
-      <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">Projects & Research</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <section id="projects" class="py-24 px-6 relative">
+    <div class="max-w-5xl mx-auto">
+      <h3 class="text-3xl font-bold mb-12 flex items-center">
+        <span class="text-brand-400 mr-4 font-mono">01.</span> Projects & Research
+        <div class="h-px bg-gray-700 flex-grow ml-6"></div>
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <h3 class="font-bold text-xl mb-2">🚗 運転負荷に合わせた音声対話システム</h3>
-          <p class="text-sm text-gray-600 mb-4">Python / Streamlit / OpenAI API / JavaScript</p>
-          <p class="text-gray-700 text-sm">
-            ドライバーの負荷状態（交差点など）に合わせて、AIが自律的に会話を中断・再開（レジューム）するシステムを開発。YANS 2026でのデモ発表に向けて構築中。
+        <div class="glass p-8 rounded-2xl transition-all duration-300 glass-hover group">
+          <div class="flex justify-between items-start mb-6">
+            <i class="fas fa-car text-4xl text-brand-400 group-hover:-translate-y-1 transition-transform"></i>
+            <a href="#" class="text-gray-400 hover:text-brand-400"><i class="fas fa-external-link-alt text-xl"></i></a>
+          </div>
+          <h4 class="text-2xl font-bold text-gray-100 mb-3">運転負荷に合わせた音声対話システム</h4>
+          <p class="text-gray-400 text-sm leading-relaxed mb-6">
+            ドライバーの状況（交差点や直線など）に合わせて、AIが自律的に会話を中断・再開するシステム。ドラレコ映像と対話AIを連携させる独自コンポーネントを開発。（YANS 2026 発表予定）
           </p>
+          <div class="flex flex-wrap gap-3 font-mono text-xs text-brand-400">
+            <span>Python</span><span>Streamlit</span><span>OpenAI</span><span>JavaScript</span>
+          </div>
         </div>
 
-        
-
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section>
-      <h2 class="text-2xl font-semibold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">Skills</h2>
-      <ul class="list-disc list-inside text-gray-700 space-y-2">
-        <li><strong>Languages:</strong> Python, JavaScript, Java, C</li>
-        <li><strong>Frontend:</strong> React, Tailwind CSS, HTML/CSS</li>
-        <li><strong>Others:</strong> GitHub, Cursor, Streamlit, Generative AI APIs</li>
-      </ul>
-    </section>
+  <section id="skills" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <h3 class="text-3xl font-bold mb-12 flex items-center">
+        <span class="text-brand-400 mr-4 font-mono">02.</span> Skills & Tech Stack
+        <div class="h-px bg-gray-700 flex-grow ml-6"></div>
+      </h3>
 
-  </main>
+      <div class="glass p-10 rounded-2xl">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div>
+            <h5 class="text-white font-semibold mb-4 border-b border-gray-700 pb-2">Languages</h5>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li>Python</li>
+              <li>JavaScript</li>
+              <li>Java</li>
+              <li>C</li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="text-white font-semibold mb-4 border-b border-gray-700 pb-2">Frontend</h5>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li>React</li>
+              <li>Tailwind CSS</li>
+              <li>HTML5 / CSS3</li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="text-white font-semibold mb-4 border-b border-gray-700 pb-2">AI / Data</h5>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li>LLMs (OpenAI, Gemini)</li>
+              <li>Streamlit</li>
+              <li>Pandas</li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="text-white font-semibold mb-4 border-b border-gray-700 pb-2">Tools</h5>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li>Cursor</li>
+              <li>Git / GitHub</li>
+              <li>Paiza (S-Rank track)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <footer class="bg-gray-800 text-white text-center py-6 mt-12">
-    <p>&copy; 2026 Kanata Arakaki. All rights reserved.</p>
+  <footer class="py-8 text-center text-gray-500 text-sm font-mono mt-12 border-t border-white/10">
+    <p>Designed & Built by Kanata Arakaki</p>
+    <p class="mt-2 text-xs">Powered by Tailwind CSS</p>
   </footer>
 
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          entry.target.classList.add('animate-fade-in-up');
+        }
+      });
+    });
+    document.querySelectorAll('section > div').forEach((el) => {
+      el.style.opacity = '0';
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>
