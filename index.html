@@ -1,51 +1,281 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kanata Arakaki - Portfolio</title>
-  <link rel="stylesheet" href="css/variables.css?v=1786083912871" />
-  <link rel="stylesheet" href="css/base.css?v=1786083912871" />
-  <link rel="stylesheet" href="css/custom.css?v=1786083912871" />
-</head>
-<body class="portfolio-body" data-layout="standard">
-  <div class="portfolio-page">
-    <header class="portfolio-header">
-      <h1 class="portfolio-header__name">Kanata Arakaki</h1>
-      <p class="portfolio-header__tagline">運転負荷に合わせた音声対話システム</p>
-    </header>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanata Arakaki | Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: { brand: { 400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2' } },
+        }
+      }
+    }
+  </script>
 
-    <div class="portfolio-socials">
-      <a class="portfolio-socials__link portfolio-header__github" href="https://github.com/Araka0311" target="_blank" rel="noopener noreferrer" aria-label="GitHubを開く">
-        <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+  <style>
+    body { background-color: #030712; color: #ededed; overflow-x: hidden; margin: 0; }
+    
+    /* ▼▼▼ 限界突破1：タイピングの「｜」が3秒後に消える ▼▼▼ */
+    .typing-text {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid transparent;
+      /* blinkを4回（約3秒）で止める */
+      animation: typing 2s steps(30, end) forwards, blink 0.75s step-end 4;
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink { 0%, 100% { border-color: transparent } 50% { border-color: #22d3ee } }
+
+    /* ▼▼▼ 限界突破2：完全に機能する3Dスポットライトカード ▼▼▼ */
+    .card-wrapper {
+      perspective: 1000px; /* 3D空間の奥行き */
+    }
+    .spotlight-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 1rem;
+      padding: 1px;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      will-change: transform;
+    }
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      border-radius: 1rem;
+      /* マウスの座標(var(--x), var(--y))を中心に光る */
+      background: radial-gradient(600px circle at var(--x) var(--y), rgba(34, 211, 238, 0.15), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .spotlight-card:hover::before { opacity: 1; }
+    .spotlight-card:hover {
+      box-shadow: 0 20px 40px -10px rgba(34, 211, 238, 0.1);
+      border-color: rgba(34, 211, 238, 0.3);
+    }
+    .spotlight-card-content {
+      background: #0a0a0a;
+      border-radius: 0.95rem;
+      height: 100%;
+      padding: 2.5rem;
+      position: relative;
+      z-index: 1;
+      /* 3D効果：中身が少し浮き上がる */
+      transform: translateZ(20px); 
+    }
+
+    /* キャンバス（背景） */
+    canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -10; pointer-events: none;
+    }
+  </style>
+</head>
+<body class="antialiased relative selection:bg-brand-500 selection:text-white">
+
+  <canvas id="network-canvas"></canvas>
+
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] opacity-20 pointer-events-none" 
+       style="background: radial-gradient(ellipse at top, rgba(34,211,238,0.4), transparent 70%); z-index: -1;">
+  </div>
+
+  <nav class="fixed w-full z-50 backdrop-blur-md border-b border-white/5 bg-black/40">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="font-mono font-bold text-xl tracking-tighter hover:text-brand-400 transition-colors cursor-pointer">
+        KANATA<span class="text-brand-400">.</span>
+      </div>
+      <a href="https://github.com/Araka0311" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+        <i class="fab fa-github text-xl"></i>
       </a>
     </div>
-      <ul class="portfolio-skills">
-        <li class="portfolio-skill-badge">
-          <img class="portfolio-skill-badge__icon" src="https://skillicons.dev/icons?i=react" alt="" width="18" height="18" loading="lazy" onerror="this.style.display='none'" />
-          <span class="portfolio-skill-badge__label">React</span>
-        </li>
-      </ul>
+  </nav>
 
-    <main class="portfolio-main">
-      <section class="portfolio-projects">
-        <h2 class="portfolio-projects__title">Projects</h2>
-        <ul class="portfolio-projects__list">
-      <li class="portfolio-project-card">
-        <h3 class="portfolio-project-card__name">
-          <a class="portfolio-project-card__link" href="https://github.com/Araka0311/oop2_practice" target="_blank" rel="noopener noreferrer">oop2_practice</a>
-        </h3>
-        
-        
-        
-      </li>
-        </ul>
-      </section>
-    </main>
+  <main class="pt-32 pb-24 px-6 max-w-5xl mx-auto space-y-32">
+    
+    <section class="space-y-6 pt-12">
+      <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-400 text-xs font-mono mb-4">
+        <span class="w-2 h-2 rounded-full bg-brand-400 mr-2 animate-pulse"></span> Available for Research & Dev
+      </div>
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white leading-tight drop-shadow-lg">
+        Building intelligent <br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-blue-500">interactions.</span>
+      </h1>
+      <div class="h-8 md:h-10 mt-2">
+        <p class="text-xl md:text-2xl text-gray-400 font-mono typing-text">I'm Kanata Arakaki.</p>
+      </div>
+      <p class="text-gray-400 max-w-2xl text-lg leading-relaxed pt-6">
+        愛知工業大学 情報科学部 コンピュータシステム専攻 3年。<br>
+        ヒューマン・コンピュータ・インタラクション（HCI）と生成AIを掛け合わせ、ユーザーの認知負荷に寄り添う次世代のシステムを研究・開発しています。
+      </p>
+    </section>
 
-    <footer class="portfolio-footer">
-      <p class="portfolio-footer__text">Generated with blank folio</p>
-    </footer>
-  </div>
+    <section id="projects">
+      <h2 class="text-2xl font-bold text-white mb-8 font-mono"><span class="text-brand-400">/</span> projects_and_skills</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <div class="card-wrapper">
+          <div class="spotlight-card group">
+            <div class="spotlight-card-content">
+              <div class="w-12 h-12 rounded-lg bg-brand-500/10 flex items-center justify-center mb-6 border border-brand-500/30 group-hover:bg-brand-500/20 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+                <i class="fas fa-car text-xl text-brand-400"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-4">運転負荷に合わせた音声対話システム</h3>
+              <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                ドライバーの状況（交差点や直線など）に合わせて、AIが自律的に会話を中断・再開するシステム。ドラレコ映像と対話AIを連携させる独自の非同期通信コンポーネントを開発。（YANS 2026 発表予定）
+              </p>
+              <div class="flex flex-wrap gap-2 font-mono text-[11px] text-brand-300">
+                <span class="px-2 py-1 bg-brand-500/10 rounded-md border border-brand-500/20">Python</span>
+                <span class="px-2 py-1 bg-brand-500/10 rounded-md border border-brand-500/20">Streamlit</span>
+                <span class="px-2 py-1 bg-brand-500/10 rounded-md border border-brand-500/20">JavaScript</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-wrapper">
+          <div class="spotlight-card group">
+            <div class="spotlight-card-content">
+              <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/30 group-hover:bg-blue-500/20 transition-colors shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                <i class="fas fa-code text-xl text-blue-400"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-4">Algorithm & Competitive Programming</h3>
+              <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                バックエンドの処理速度やリソース最適化の基礎となるアルゴリズム構築能力を鍛えるため、Paizaプラットフォーム等で日々研鑽中。ロジカルな思考力と実装スピードを重視。
+              </p>
+              <div class="flex flex-wrap gap-2 font-mono text-[11px] text-blue-300">
+                <span class="px-2 py-1 bg-blue-500/10 rounded-md border border-blue-500/20">Java</span>
+                <span class="px-2 py-1 bg-blue-500/10 rounded-md border border-blue-500/20">Python</span>
+                <span class="px-2 py-1 bg-blue-500/10 rounded-md border border-blue-500/20">C</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="py-12 text-center text-gray-600 text-xs font-mono border-t border-white/5 mt-20">
+    <p>Handcrafted by Kanata Arakaki</p>
+  </footer>
+
+  <script>
+    // --- 1. 3Dスポットライト制御 ---
+    document.querySelectorAll('.card-wrapper').forEach(wrapper => {
+      const card = wrapper.querySelector('.spotlight-card');
+      
+      wrapper.addEventListener('mousemove', e => {
+        const rect = wrapper.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // スポットライトの座標を渡す
+        card.style.setProperty('--x', `${x}px`);
+        card.style.setProperty('--y', `${y}px`);
+        
+        // 3D傾き計算 (中央を0としてマウス位置で角度を変える)
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -5; // 最大5度傾く
+        const rotateY = ((x - centerX) / centerX) * 5;
+        
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      
+      // マウスが外れたら元の平らな状態に戻す
+      wrapper.addEventListener('mouseleave', () => {
+        card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      });
+    });
+
+    // --- 2. AIネットワーク背景 (Canvas Particle System) ---
+    const canvas = document.getElementById('network-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles = [];
+    let mouse = { x: -9999, y: -9999 };
+
+    function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = [];
+      // 画面の広さに応じてノード（点）の数を調整
+      const particleCount = Math.floor((width * height) / 15000);
+      for(let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.8, // 動くスピード
+          vy: (Math.random() - 0.5) * 0.8,
+          radius: Math.random() * 1.5 + 0.5
+        });
+      }
+    }
+
+    window.addEventListener('resize', initCanvas);
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('mouseout', () => { mouse.x = -9999; mouse.y = -9999; });
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'rgba(34, 211, 238, 0.6)'; // ドットの色
+      
+      for(let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+        
+        // 画面端で跳ね返る
+        if(p.x < 0 || p.x > width) p.vx *= -1;
+        if(p.y < 0 || p.y > height) p.vy *= -1;
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ノード同士を線で繋ぐ
+        for(let j = i + 1; j < particles.length; j++) {
+          let p2 = particles[j];
+          let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if(dist < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(34, 211, 238, ${0.15 - dist/800})`;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+        
+        // マウスが近づいた時に光の線を繋ぐ（インタラクション）
+        let mdist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+        if(mdist < 180) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(34, 211, 238, ${0.3 - mdist/600})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    
+    initCanvas();
+    animate();
+  </script>
 </body>
 </html>
