@@ -1,0 +1,17 @@
+{
+  "displayName": "Kanata Arakaki",
+  "tagline": "運転負荷に合わせた音声対話システム",
+  "skills": [
+    "React"
+  ],
+  "socialLinks": [],
+  "layoutPattern": "standard",
+  "repositories": [
+    {
+      "name": "oop2_practice",
+      "generatedText": "",
+      "appealText": "",
+      "sourceHash": ""
+    }
+  ]
+}

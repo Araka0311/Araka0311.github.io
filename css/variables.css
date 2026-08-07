@@ -1,0 +1,16 @@
+:root {
+  --color-background: #faf8f3;
+  --color-surface: #f5f1e8;
+  --color-text: #3d3528;
+  --color-text-muted: #8b8276;
+  --color-accent: #c17a5c;
+  --color-border: #e8dfd2;
+  --font-family-base: "Georgia", "Hiragino Mincho ProN", serif;
+  --radius-base: 8px;
+  --spacing-unit: 14px;
+  --layout-align: center;
+  --font-size-base: 16px;
+  --line-height-base: 1.8;
+  --container-width: 900px;
+  --grid-columns: 2;
+}
